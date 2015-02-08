@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 成员变量以下划线开头，比如_account，是private变量，其他类不能访问
+以_开头的方法是protect
+以__开头的方法是private
 
 """
 class CreditCard: 
@@ -46,10 +48,26 @@ class CreditCard:
             return True 
     def make_payment(self, amount): 
         """Process customer payment that reduces balance."""
-        self._balance -= amount 
+        self._balance -= amount
+        
+    def __add__(self,other):
+        """
+        重载+操作符,又从新构造一个新的CreditCard实例
+        """
+        return self.__class__(self._customer,self._bank,self._account,self._limit+other._limit)
+    
+    def __str__(self):
+        """
+        重载str
+        """
+        return str(self._account+";"+self._bank)
         
 if __name__=='__main__':
     card=CreditCard('John Bowman','California Savings','56 5391 0375 9387 5309', 2500)
+    card1=CreditCard('John Bowman','California Savings','56 5391 0375 9387 5309', 3500)
     account=card.get_account()
+    #测试两个对象相加    
+    print((card+card1).get_limit())
     print(account)
+    print(str(card1))
         
